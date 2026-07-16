@@ -8,14 +8,17 @@ function Join() {
 	const handleJoin = () => {
 		const gameCode = code().trim();
 		if (gameCode) {
+			// TODO check if game exists
 			navigate(`/game/${gameCode}`);
 		}
 	};
 
 	return (
-		<div class="join">
+		<>
 			<input
+				class="full-width-input"
 				placeholder={"Game Code"}
+				type="tel"
 				value={code()}
 				onInput={(e) => setCode(e.currentTarget.value)}
 				onKeyDown={(e) => e.key === "Enter" && handleJoin()}
@@ -23,7 +26,7 @@ function Join() {
 			<button class="button primary" onClick={handleJoin}>
 				Join Game
 			</button>
-		</div>
+		</>
 	);
 }
 
@@ -31,6 +34,7 @@ function Create() {
 	const navigate = useNavigate();
 	const handleCreate = () => {
 		const gameCode = Math.floor(1000 + Math.random() * 9000).toString();
+		// TODO create game
 		navigate(`/game/${gameCode}`);
 	}
 
