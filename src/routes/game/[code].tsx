@@ -70,7 +70,7 @@ export default function Game() {
 						onInput={(e) => setResetTo(e.target.value)}
 						onKeyDown={(e) => { if (e.key === 'Enter') { handleSetNumber() } }}
 						onFocus={() => setInputFocused(true)}
-						onBlur={() => { setInputFocused(false); setShowSetCounter(false); setResetTo(''); }}
+						onBlur={() => { handleSetNumber(); setInputFocused(false); setShowSetCounter(false) }}
 						value={resetTo()}
 					/>
 					<button class="button secondary" onMouseDown={handleSetNumber}>Set</button>
