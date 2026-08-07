@@ -1,13 +1,15 @@
 import { A, useParams } from "@solidjs/router";
-import { createResource, createSignal, Show } from "solid-js";
+import { createResource, createSignal, onCleanup, Show } from "solid-js";
+import { getGame, updateGame } from "../service/lpnService";
+
+const POLL_INTERVAL_MS = 60_000;
 
 type LicensePlateProps = {
-	plateNum: Number | undefined;
+	plateNum: number | undefined;
 }
 
 function LicensePlate(props: LicensePlateProps) {
 	const plateString = () => `${props.plateNum ?? 0}`.padStart(3, "0")
-	console.log(props.plateNum, plateString)
 	return (
 		<div class="license-plate">
 			<div class="plate-header">Looking For...</div>
@@ -19,41 +21,43 @@ function LicensePlate(props: LicensePlateProps) {
 
 export default function Game() {
 	const params = useParams();
-	const [currentPlate, { mutate: setCurrentPlate }] = createResource(
+	const [currentPlate, { mutate: setCurrentPlate, refetch }] = createResource(
 		params.code,
 		async (code) => {
-			console.log(`fetching lpn for code: ${code}`)
-			return 123;
+			return (await getGame(Number(params.code))).lpn
 		},
 	)
+
+	const intervalId = setInterval(() => refetch(), POLL_INTERVAL_MS);
+	onCleanup(() => clearInterval(intervalId));
 
 	const [showSetCounter, setShowSetCounter] = createSignal(false);
 	const [resetTo, setResetTo] = createSignal('');
 	const [inputFocused, setInputFocused] = createSignal(false);
 
-	const handleSetNumber = () => {
+	const handleSetNumber = async () => {
 		const plateNum = Number(resetTo())
 		setInputFocused(false)
 		if (isNaN(plateNum) || resetTo() === '') {
 			setResetTo('')
 			return
 		}
-		console.log(`setting plate number to ${plateNum}`)
+		await updateGame(Number(params.code), plateNum)
 		setCurrentPlate(plateNum)
 		setShowSetCounter(false)
 		setResetTo('')
 	}
 
-	const handleFoundNumber = () => {
+	const handleFoundNumber = async () => {
 		let plate = (currentPlate() ?? 0) + 1
+		await updateGame(Number(params.code), plate)
 		setCurrentPlate(plate)
-		console.log(`set plate to ${plate}`)
 	}
 
-	const handleSubtractOne = () => {
+	const handleSubtractOne = async () => {
 		let plate = (currentPlate() ?? 0) - 1
+		await updateGame(Number(params.code), plate)
 		setCurrentPlate(plate)
-		console.log(`set plate to ${plate}`)
 	}
 
 	return (

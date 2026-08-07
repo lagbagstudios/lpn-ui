@@ -6,33 +6,24 @@ interface Game {
 }
 
 export const createGame = async (code: number): Promise<Game> => {
-	try {
-		return (await fetch(`${baseUrl}/game`, {
-			method: "POST",
-			body: JSON.stringify({ code: code })
-		})).json()
-	} catch (error) {
-		throw error
-	}
+	const response = await fetch(`${baseUrl}/game`, {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({ code })
+	});
+	return response.json();
 }
 
 export const getGame = async (code: number): Promise<Game> => {
-	try {
-		return (await fetch(`${baseUrl}/game/${code}`)).json()
-	} catch (error) {
-		throw error
-	}
+	const response = await fetch(`${baseUrl}/game/${code}`);
+	return response.json();
 }
 
 export const updateGame = async (code: number, lpn: number): Promise<Game> => {
-	console.log(code, lpn)
-	try {
-		return (await fetch(`${baseUrl}/game/${code}`, {
-			method: "PUT",
-			body: JSON.stringify({ code: code, lpn: lpn })
-		})).json()
-	} catch (error) {
-		throw error
-	}
+	const response = await fetch(`${baseUrl}/game/${code}`, {
+		method: "PUT",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({ code, lpn })
+	});
+	return response.json();
 }
-
