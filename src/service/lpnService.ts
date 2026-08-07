@@ -1,4 +1,4 @@
-const baseUrl = "http://100.69.182.53:8080"
+const baseUrl = "https://lpnapi.deiders.com"
 
 interface Game {
 	code: number;
