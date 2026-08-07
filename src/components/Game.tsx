@@ -2,7 +2,7 @@ import { A, useParams } from "@solidjs/router";
 import { createResource, createSignal, onCleanup, Show } from "solid-js";
 import { getGame, updateGame } from "../service/lpnService";
 
-const POLL_INTERVAL_MS = 60_000;
+const POLL_INTERVAL_MS = 5_000;
 
 type LicensePlateProps = {
 	plateNum: number | undefined;
