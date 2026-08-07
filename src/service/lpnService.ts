@@ -1,4 +1,4 @@
-const baseUrl = "http://localhost:8080"
+const baseUrl = "http://100.69.182.53:8080"
 
 interface Game {
 	code: number;
