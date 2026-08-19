@@ -8,6 +8,7 @@ const App: Component = () => {
   return (
     <Router>
       <Route path="/" component={Home} />
+      <Route path="/game" component={Game} />
       <Route path="/game/:code" component={Game} />
     </Router>
   );
