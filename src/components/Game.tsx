@@ -2,7 +2,7 @@ import { A, useParams } from "@solidjs/router";
 import { createResource, createSignal, onCleanup, Show } from "solid-js";
 import { getGame, updateGame } from "../service/lpnService";
 
-const POLL_INTERVAL_MS = 5_000;
+const POLL_INTERVAL_MS = 60_000;
 
 type LicensePlateProps = {
 	plateNum: number | undefined;
@@ -23,7 +23,7 @@ export default function Game() {
 	const params = useParams();
 	const [currentPlate, { mutate: setCurrentPlate, refetch }] = createResource(
 		params.code,
-		async (code) => {
+		async () => {
 			return (await getGame(Number(params.code))).lpn
 		},
 	)
