@@ -2,12 +2,17 @@
   --primary: #57565A;
   --secondary: #FAF0CA;
   --accent: #9D8420;
+  --radius: 8px;
+  --font-family: "Arial", sans-serif;
+  --spacing-1: 1rem;
+  --border-none: none;
+  --full-width: 100%;
 }
 
 body {
-  background-color: #333232;
+  background-color: #111212;
   color: white;
-  font-family: "Arial", sans-serif;
+  font-family: var(--font-family);
 }
 
 .home {
@@ -21,28 +26,28 @@ body {
 }
 
 input {
-  border: none;
-  border-radius: 8px;
-  padding-left: 8px;
+  border: var(--border-none);
+  border-radius: var(--radius);
+  padding-left: var(--radius);
 }
 
 .full-width-input {
   display: flex;
-  padding: 1rem;
-  margin-bottom: 8px;
-  width: 100%;
-  max-width: 100%;
+  padding: var(--spacing-1);
+  margin-bottom: var(--radius);
+  width: var(--full-width);
+  max-width: var(--full-width);
   box-sizing: border-box;
 }
 
 .button {
   font-size: 16px;
-  padding: 1rem;
-  border-radius: 8px;
-  border: none;
+  padding: var(--spacing-1);
+  border-radius: var(--radius);
+  border: var(--border-none);
   cursor: pointer;
   transition: filter 0.2s ease;
-  width: 100%;
+  width: var(--full-width);
   &:hover {
     filter: brightness(0.9);
   }
@@ -72,7 +77,7 @@ input {
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  font-family: "Arial", sans-serif;
+  font-family: var(--font-family);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   margin-top: 2rem;
 }
@@ -107,15 +112,15 @@ input {
   position: fixed;
   bottom: 0;
   left: 0;
-  width: 100%;
+  width: var(--full-width);
   text-align: center;
-  padding-bottom: 1rem;
+  padding-bottom: var(--spacing-1);
   font-size: 1rem;
 }
 
 .text-link {
   background: none;
-  border: none;
+  border: var(--border-none);
   color: inherit;
   font: inherit;
   cursor: pointer;
@@ -132,7 +137,7 @@ input {
 	position: fixed;
 	bottom: 72px;
 	input {
-		padding: 1rem;
+		padding: var(--spacing-1);
 		border-top-right-radius: 0;
 		border-bottom-right-radius: 0;
 	}
