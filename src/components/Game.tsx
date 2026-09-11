@@ -1,5 +1,5 @@
 import { A, useParams } from "@solidjs/router";
-import { createResource, createSignal, onCleanup, Show } from "solid-js";
+import { createResource, onCleanup } from "solid-js";
 import { getGame, updateGame } from "../service/lpnService";
 
 const POLL_INTERVAL_MS = 60_000;
@@ -12,7 +12,7 @@ function LicensePlate(props: LicensePlateProps) {
 	const plateString = () => `${props.plateNum ?? 0}`.padStart(3, "0")
 	return (
 		<div class="license-plate">
-			<div class="plate-header">Looking For...</div>
+			<div class="plate-header">Looking For</div>
 			<div class="plate-number">{plateString()}</div>
 			<div class="plate-slogan">Land of 10,000 Lakes</div>
 		</div>
@@ -31,23 +31,6 @@ export default function Game() {
 	const intervalId = setInterval(() => refetch(), POLL_INTERVAL_MS);
 	onCleanup(() => clearInterval(intervalId));
 
-	const [showSetCounter, setShowSetCounter] = createSignal(false);
-	const [resetTo, setResetTo] = createSignal('');
-	const [inputFocused, setInputFocused] = createSignal(false);
-
-	const handleSetNumber = async () => {
-		const plateNum = Number(resetTo())
-		setInputFocused(false)
-		if (isNaN(plateNum) || resetTo() === '') {
-			setResetTo('')
-			return
-		}
-		await updateGame(Number(params.code), plateNum)
-		setCurrentPlate(plateNum)
-		setShowSetCounter(false)
-		setResetTo('')
-	}
-
 	const handleFoundNumber = async () => {
 		let plate = (currentPlate() ?? 0) + 1
 		await updateGame(Number(params.code), plate)
@@ -61,28 +44,14 @@ export default function Game() {
 	}
 
 	return (
-		<div class="home" classList={{ "input-focused": inputFocused() }}>
-			<h3 class="hideable-content">Game Code: {params.code}</h3>
+		<div class="home">
+			<A class="text-link" href="/">Home</A>
 			<LicensePlate plateNum={currentPlate()} />
 			<button class="button secondary found-button hideable-content" onClick={handleFoundNumber}>Found It!</button>
 			<button class="button primary found-button hideable-content" onClick={handleSubtractOne}>Subtract One</button>
-			<Show when={showSetCounter()}>
-				<div class="reset-counter">
-					<input
-						placeholder="Enter LPN"
-						type="tel"
-						onInput={(e) => setResetTo(e.target.value)}
-						onKeyDown={(e) => { if (e.key === 'Enter') { handleSetNumber() } }}
-						onFocus={() => setInputFocused(true)}
-						onBlur={() => { handleSetNumber(); setInputFocused(false); setShowSetCounter(false) }}
-						value={resetTo()}
-					/>
-					<button class="button secondary" onMouseDown={handleSetNumber}>Set</button>
-				</div>
-			</Show>
-			<p class="footer-text">
-				<A class="text-link" href="/">Home</A> | <button class="text-link" onClick={() => setShowSetCounter(!showSetCounter())}>{showSetCounter() ? `Close` : `Manually Set Number`}</button>
-			</p>
+			<div class="footer-text">
+				<h3>Game Code: {params.code}</h3>
+			</div>
 		</div >
 	)
 }

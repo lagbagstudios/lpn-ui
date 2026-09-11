@@ -1,5 +1,6 @@
 import { useNavigate } from "@solidjs/router";
 import { createSignal } from "solid-js";
+import RecentlyJoined from "./RecentlyJoined";
 
 function Join() {
 	const [code, setCode] = createSignal("");
@@ -8,7 +9,9 @@ function Join() {
 	const handleJoin = () => {
 		const gameCode = code().trim();
 		if (gameCode) {
-			// TODO check if game exists
+			const saved: string[] = JSON.parse(localStorage.getItem("recentCodes") || "[]");
+			const updated = [gameCode, ...saved.filter((c: string) => c !== gameCode)].slice(0, 3);
+			localStorage.setItem("recentCodes", JSON.stringify(updated));
 			navigate(`/game/${gameCode}`);
 		}
 	};
@@ -52,6 +55,7 @@ export default function Home() {
 			<Create />
 			<p>- or -</p>
 			<Join />
+			<RecentlyJoined />
 		</div>
 	);
 }
